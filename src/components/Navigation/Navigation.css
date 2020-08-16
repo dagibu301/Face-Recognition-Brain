@@ -2,3 +2,7 @@ nav {
     display: flex;
     justify-content: flex-end;
 }
+
+p {
+    z-index: 10;
+}

@@ -1,5 +1,6 @@
 .form {
   width: 700px;
+  z-index: 10;
   background: radial-gradient(
         circle farthest-side at 0% 50%,
         #fb1 23.5%,
