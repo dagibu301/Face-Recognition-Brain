@@ -1,4 +1,4 @@
-# RoboFriends 
+# Face Recognition App 
 
 ## :rocket: Technologies used
 This project was developed using this technologies:
