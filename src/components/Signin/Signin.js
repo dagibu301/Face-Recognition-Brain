@@ -1,4 +1,5 @@
 import React from "react";
+import "./Signin.css";
 
 class Signin extends React.Component {
   constructor(props) {
@@ -6,31 +7,47 @@ class Signin extends React.Component {
     this.state = {
       signInEmail: "",
       signInPassword: "",
+      isEmailValid: false,
+      isPswdValid: false,
+      hasAttemptedLogin: false
     };
   }
 
   onEmailChange = (event) => {
     this.setState({ signInEmail: event.target.value });
+    if (this.state.signInEmail !== "") {
+      this.setState({ isEmailValid: true });
+    } else if (this.state.signInEmail === "") {
+      this.setState({ isEmailValid: false });
+    }
   };
 
   onPasswordChange = (event) => {
     this.setState({ signInPassword: event.target.value });
+    if (this.state.signInPassword !== "") {
+      this.setState({ isPswdValid: true });
+    } else if (this.state.signInPassword === "") {
+      this.setState({ isPswdValid: false });
+    }
   };
 
   onsubmitSignIn = () => {
+    console.log("signin");
     fetch("https://frozen-inlet-49147.herokuapp.com/signin", {
-      method: 'post',
-      headers: { 'Content-Type': 'application/json'},
+      method: "post",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         email: this.state.signInEmail,
-        password: this.state.signInPassword
-      })
+        password: this.state.signInPassword,
+      }),
     })
       .then((res) => res.json())
       .then((user) => {
         if (user.id) {
           this.props.loadUser(user);
           this.props.onRouteChange("home");
+        } else {
+          this.setState({hasAttemptedLogin: true});
         }
         console.log(user);
       });
@@ -50,10 +67,15 @@ class Signin extends React.Component {
                 </label>
                 <input
                   onChange={this.onEmailChange}
-                  className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                  className={
+                    (!this.state.isEmailValid && this.state.hasAttemptedLogin)
+                      ? "pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100  input-error"
+                      : "pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                  }
                   type="email"
                   name="email-address"
                   id="email-address"
+                  required
                 />
               </div>
               <div className="mv3">
@@ -62,10 +84,15 @@ class Signin extends React.Component {
                 </label>
                 <input
                   onChange={this.onPasswordChange}
-                  className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                  className={
+                    (!this.state.isPswdValid && this.state.hasAttemptedLogin)
+                      ? "b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100 input-error"
+                      : "b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100 "
+                  }
                   type="password"
                   name="password"
                   id="password"
+                  required
                 />
               </div>
             </fieldset>
