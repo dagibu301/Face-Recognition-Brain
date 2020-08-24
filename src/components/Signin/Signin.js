@@ -14,8 +14,9 @@ class Signin extends React.Component {
   }
 
   onEmailChange = (event) => {
+    console.log( event.target.value)
     this.setState({ signInEmail: event.target.value });
-    if (this.state.signInEmail !== "") {
+    if (!this.state.signInEmail) {
       this.setState({ isEmailValid: true });
     } else if (this.state.signInEmail === "") {
       this.setState({ isEmailValid: false });
@@ -24,7 +25,7 @@ class Signin extends React.Component {
 
   onPasswordChange = (event) => {
     this.setState({ signInPassword: event.target.value });
-    if (this.state.signInPassword !== "") {
+    if (!this.state.signInPassword) {
       this.setState({ isPswdValid: true });
     } else if (this.state.signInPassword === "") {
       this.setState({ isPswdValid: false });
@@ -47,6 +48,7 @@ class Signin extends React.Component {
           this.props.loadUser(user);
           this.props.onRouteChange("home");
         } else {
+          alert('Failed to login')
           this.setState({hasAttemptedLogin: true});
         }
         console.log(user);
